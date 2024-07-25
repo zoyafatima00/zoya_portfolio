@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #loader-wrapper {
+            background: linear-gradient(to right, #6dd5ed, #2193b0); /* Gradient background */
+            position: fixed;
+            visibility: visible;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1000;
+        }
+#loader-container {
+    /* Ensures the loader remains centered */
+    padding: 10px;
+}
+        #loader {
+         box-shadow: 0 0 20px #3498db; /* Add shadow for depth */
+    animation: spin 2s ease-in-out infinite, pulse 2s infinite alternate;
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 5px solid #3498db;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+       /* ... Other styles remain unchanged ... */
+
+#loader-text {
+     margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+    font-family: 'Courier New', Courier, monospace; /* Typewriter-like font */
+    white-space: nowrap; /* Ensures text doesn't wrap */
+    overflow: hidden; /* Hides overflowed text */
+    border-right: .15em solid; /* Cursor-like effect */
+    animation: blinkCursor 0.75s step-end infinite;
+}
+
+@keyframes blinkCursor {
+    from { border-right-color: black; }
+    to { border-right-color: transparent; }
+}
+
+
+
+    </style>
+    <!-- If you are serving your web app in a path other than the root, change the href value below to reflect the base path you are serving from. -->
+    <base href="$FLUTTER_BASE_HREF">
+
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description"
+          content="Explore Asad ur Rehman Khan's impressive portfolio, powered by Flutter. Check out his projects, blog posts, and expertise in web development.">
+
+    <!-- SEO meta tags -->
+    <meta name="keywords"
+          content="Asad ur Rehman Khan, Portfolio, Flutter, Web Development, Projects, Blog">
+    <meta name="author" content="Asad ur Rehman Khan">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#ffffff"> <!-- Set your preferred theme color -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!-- Upgrade HTTP to HTTPS -->
+
+    <!-- Social media meta tags -->
+    <meta property="og:title" content="Asad ur Rehman Khan">
+    <meta property="og:description"
+          content="Explore Asad ur Rehman Khan's impressive portfolio, powered by Flutter. Check out his projects, blog posts, and expertise in web development.">
+    <meta property="og:image"
+          content="https://raw.githubusercontent.com/AbhishekDoshi26/asad_portfolio/main/assets/images/home_page_screenshot.png">
+    <meta property="og:url" content="https://asadkhan.live"> <!-- Update with your website URL -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Asad ur Rehman Khan's Portfolio">
+    <meta name="twitter:description"
+          content="Explore Asad ur Rehman Khan's impressive portfolio, powered by Flutter. Check out his projects, blog posts, and expertise in web development.">
+    <meta name="twitter:image"
+          content="https://raw.githubusercontent.com/AbhishekDoshi26/asad_portfolio/main/assets/images/home_page_screenshot.png">
+
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="asad_portfolio">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png"/>
+
+    <title>Asad ur Rehman Khan</title>
+    <link rel="manifest" href="manifest.json">
+
+    <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+
+
+    </script>
+    <!-- This script adds the flutter initialization JS code -->
+    <script src="flutter.js" defer></script>
+</head>
+<body>
+<div id="loader-wrapper">
+    <div id="loader-container">
+        <div id="loader"></div>
+    </div>
+    <div id="loader-text"><span id="text"></span></div>
+</div>
+
+
+<script>
+    const phrases = ["Zoya's Portfolio is loading...", "Please wait"];
+    let currentPhrase = 0;
+    let currentLetter = 0;
+    let forward = true;
+    const textElement = document.getElementById('text');
+
+    function type() {
+        if (forward) {
+            if (currentLetter < phrases[currentPhrase].length) {
+                textElement.textContent += phrases[currentPhrase].charAt(currentLetter);
+                currentLetter++;
+                setTimeout(type, 100); // Speed of typing
+            } else {
+                forward = false;
+                setTimeout(type, 2000); // Wait before starting to delete
+            }
+        } else {
+            if (currentLetter > 0) {
+                textElement.textContent = phrases[currentPhrase].substring(0, currentLetter - 1);
+                currentLetter--;
+                setTimeout(type, 100); // Speed of deleting
+            } else {
+                forward = true;
+                currentPhrase = (currentPhrase + 1) % phrases.length; // Move to next phrase
+                setTimeout(type, 500); // Wait before starting new phrase
+            }
+        }
+    }
+
+    type();
+    document.addEventListener('flutterLoaded', function() {
+        document.getElementById('loader-wrapper').style.display = 'none';
+    });
+    setTimeout(function() {
+        document.getElementById('loader-wrapper').style.display = 'none';
+    }, 10000);
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+
+
+</script>
+</body>
+</html>
